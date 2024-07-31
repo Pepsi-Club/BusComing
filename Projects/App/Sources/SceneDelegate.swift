@@ -73,7 +73,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func checkAndUpdateIfNeeded() {
-        AppStoreCheck.latestVersion()
+        DefaultAppStoreCheck.shared.latestVersion()
             .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { version in
                 let splitMarketingVersion = version.split(separator: ".")
@@ -106,9 +106,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let alertAction = UIAlertAction(
             title: "업데이트",
-            style: .default) { _ in
-                AppStoreCheck.openAppStore()
-            }
+            style: .default
+        ) { _ in
+            DefaultAppStoreCheck.shared.openAppStore()
+        }
         
         alert.addAction(alertAction)
         DispatchQueue.main.async {
