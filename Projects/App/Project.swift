@@ -29,12 +29,6 @@ let project = Project.makeProject(
 //            ]
 //        )
     ],
-    packages: [
-        .remote(
-            url: "https://github.com/firebase/firebase-ios-sdk",
-            requirement: .exact("10.23.1")
-        ),
-    ],
     dependencies: [
         .mainFeature,
         .data,
