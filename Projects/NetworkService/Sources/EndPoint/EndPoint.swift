@@ -24,7 +24,7 @@ public enum Scheme: String {
 }
 
 extension EndPoint {
-    public var toURLRequest: URLRequest? {
+    public func toURLRequest() throws -> URLRequest {
         var urlComponent = URLComponents()
         urlComponent.scheme = scheme.rawValue
         urlComponent.host = host
@@ -38,7 +38,7 @@ extension EndPoint {
         guard let urlStr = urlComponent.url?.absoluteString
             .replacingOccurrences(of: "%25", with: "%"),
               let url = URL(string: urlStr)
-        else { return nil }
+        else { throw NetworkError.invalidURL }
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = method.toString
         urlRequest.allHTTPHeaderFields = header
@@ -47,11 +47,10 @@ extension EndPoint {
                 let httpBody = try JSONSerialization.data(withJSONObject: body)
                 urlRequest.httpBody = httpBody
             } catch {
-                #if DEBUG
-                print(error.localizedDescription)
-                #endif
+                throw NetworkError.jsonSerializationError(error)
             }
         }
         return urlRequest
+        
     }
 }

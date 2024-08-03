@@ -14,45 +14,47 @@ public final class DefaultNetworkService: NetworkService {
     public init() { }
     
     public func request(endPoint: EndPoint) -> Observable<Data> {
-        .create { observer in
-            guard let urlRequest = endPoint.toURLRequest
-            else {
+        Observable.create { observer in
+            do {
+                let urlRequest = try endPoint.toURLRequest()
+                let task = URLSession.shared.dataTask(
+                    with: urlRequest
+                ) { data, response, error in
+                    if let error {
+                        observer.onError(NetworkError.transportError(error))
+                        return
+                    }
+                    guard let httpURLResponse = response as? HTTPURLResponse
+                    else {
+                        observer.onError(
+                            NetworkError.invalidResponse
+                        )
+                        return
+                    }
+                    guard 200..<300 ~= httpURLResponse.statusCode
+                    else {
+                        observer.onError(
+                            NetworkError.invalidStatusCode(
+                                httpURLResponse.statusCode
+                            )
+                        )
+                        return
+                    }
+                    guard let data
+                    else {
+                        observer.onError(NetworkError.invalidData)
+                        return
+                    }
+                    observer.onNext(data)
+                    observer.onCompleted()
+                }
+                task.resume()
+                return Disposables.create {
+                    task.cancel()
+                }
+            } catch {
                 observer.onError(NetworkError.invalidURL)
                 return Disposables.create()
-            }
-            
-            let task = URLSession.shared.dataTask(
-                with: urlRequest
-            ) { data, response, error in
-                if let error {
-                    observer.onError(NetworkError.transportError(error))
-                    return
-                }
-                
-                guard let httpURLResponse = response as? HTTPURLResponse
-                else { return }
-                guard 200..<300 ~= httpURLResponse.statusCode
-                else {
-                    observer.onError(
-                        NetworkError.invalidStatusCode(
-                            httpURLResponse.statusCode
-                        )
-                    )
-                    return
-                }
-                
-                guard let data
-                else {
-                    observer.onError(NetworkError.invalidData)
-                    return
-                }
-                observer.onNext(data)
-                observer.onCompleted()
-            }
-            task.resume()
-            
-            return Disposables.create {
-                task.cancel()
             }
         }
     }
