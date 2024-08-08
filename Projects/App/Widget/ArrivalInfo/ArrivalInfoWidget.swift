@@ -10,6 +10,7 @@ import WidgetKit
 import SwiftUI
 
 @available(iOS 17.0, *)
+
 struct ArrivalInfoWidget: Widget {
     let kind: String = "ArrivalInfo"
     
@@ -24,8 +25,8 @@ struct ArrivalInfoWidget: Widget {
             )
         }
         .supportedFamilies([
-            .systemSmall,
-            .systemMedium
+            .systemSmall
+            // .systemMedium
         ])
         .configurationDisplayName("즐겨찾기")
         .description("실시간 도착정보를 확인할 수 있어요")

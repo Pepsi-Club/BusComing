@@ -1,14 +1,85 @@
 //
-//  BusStopArrivalInfoDTO.swift
-//  Data
+//  ArrivalInfoWidgetDTO.swift
+//  Widget
 //
-//  Created by gnksbm on 3/3/24.
+//  Created by 유하은 on 8/8/24.
 //  Copyright © 2024 Pepsi-Club. All rights reserved.
 //
 
 import Foundation
 
 import Domain
+
+/// BusStopListDTO
+struct BusStopListDTO: Codable {
+    let description: Description
+    let region: WMBRegion
+    let data: [BusStopInfo]
+
+    enum CodingKeys: String, CodingKey {
+        case description = "DESCRIPTION"
+        case region = "REGION"
+        case data = "DATA"
+    }
+}
+
+extension BusStopListDTO {
+    var toDomain: BusStopRegion {
+        switch region {
+        case .seoul:
+            return .seoul(
+                responses: data.map {
+                    .init(
+                        busStopName: $0.stopNm,
+                        busStopId: $0.stopNo,
+                        direction: $0.nxtStn,
+                        longitude: $0.xcode,
+                        latitude: $0.ycode
+                    )
+                }
+            )
+        }
+    }
+    
+    struct BusStopInfo: Codable {
+        let stopNm, ycode, stopNo, xcode, nxtStn: String
+        // stopType
+        // "가로변시간", "가로변전일", "가상정류장", "마을버스", "일반차로", "중앙차로"
+        let stopType: String
+        let nodeID: String
+        
+        enum CodingKeys: String, CodingKey {
+            case stopNm = "stop_nm"
+            case ycode
+            case stopNo = "stop_no"
+            case xcode
+            case nxtStn
+            case stopType = "stop_type"
+            case nodeID = "node_id"
+        }
+    }
+    
+    enum WMBRegion: String, Codable {
+        case seoul = "서울"
+    }
+    
+    struct Description: Codable {
+        let stopType, ycode, stopNm, nodeID: String
+        let stopNo, xcode, nxtStn: String
+        
+        enum CodingKeys: String, CodingKey {
+            case stopType = "STOP_TYPE"
+            case ycode = "YCODE"
+            case stopNm = "STOP_NM"
+            case nodeID = "NODE_ID"
+            case stopNo = "STOP_NO"
+            case xcode = "XCODE"
+            case nxtStn = "NXT_STN"
+        }
+    }
+}
+
+/// BusStopArrivalInfoDTO.
 
 public struct BusStopArrivalInfoDTO: Codable {
     let msgHeader: MsgHeader
@@ -64,7 +135,7 @@ public extension BusStopArrivalInfoDTO {
                 var secondArrivalRemaining = ""
                 if firstMsgArr.count > 1 {
                     firstArrivalRemaining = firstMsgArr[1]
-                    firstArrivalRemaining = 
+                    firstArrivalRemaining =
                     firstArrivalRemaining.components(separatedBy: "]")[0]
                 }
                 if secondMsgArr.count > 1 {
@@ -120,7 +191,7 @@ public extension BusStopArrivalInfoDTO {
                     firstArrivalState: firstArrivalState,
                     firstArrivalRemaining: firstArrivalRemaining,
                     secondArrivalState: secondArrivalState,
-                    secondArrivalRemaining: secondArrivalRemaining, 
+                    secondArrivalRemaining: secondArrivalRemaining,
                     adirection: item.adirection ?? "방면 정보 없음",
                     isFavorites: false,
                     isAlarmOn: false

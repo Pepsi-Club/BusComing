@@ -14,7 +14,7 @@ import Domain
 @available(iOS 17.0, *)
 struct ArrivalInfoIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource = "Configuration"
-
+    
     @Parameter(title: "정류장, 버스", optionsProvider: FavoritesOptionProvider())
     var busStop: String
 }

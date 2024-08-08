@@ -23,6 +23,7 @@ struct FavoritesOptionProvider: DynamicOptionsProvider {
     }
     
     func results() async throws -> [String] {
+        
         return await withCheckedContinuation { continuation in
             coreDataService.fetch(
                 type: FavoritesBusResponse.self

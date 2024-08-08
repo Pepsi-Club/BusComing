@@ -12,18 +12,24 @@ import WidgetKit
 import Core
 import Domain
 
+import RxSwift
+
 @available(iOS 17.0, *)
 struct ArrivalInfoProvider: AppIntentTimelineProvider {
-    private let useCase = ArrivalInfoUseCase()
     
+    public let disposeBag = DisposeBag()
+    private let networkService = WidgetNetworkService()
+    
+    /// 위젯이 로드되는 동안 표시할 기본적인 플레이스홀더 뷰
     func placeholder(in context: Context) -> ArrivalInfoEntry {
         ArrivalInfoEntry(
             date: Date(),
             configuration: ArrivalInfoIntent(),
-            responses: useCase.responses
+            responses: []
         )
     }
     
+    /// 위젯 선택시 보여주는 뷰
     func snapshot(
         for configuration: ArrivalInfoIntent,
         in context: Context
@@ -31,7 +37,7 @@ struct ArrivalInfoProvider: AppIntentTimelineProvider {
         ArrivalInfoEntry(
             date: Date(),
             configuration: configuration,
-            responses: useCase.responses
+            responses: .mock
         )
     }
     
@@ -42,7 +48,7 @@ struct ArrivalInfoProvider: AppIntentTimelineProvider {
         let entry = ArrivalInfoEntry(
             date: Date(),
             configuration: configuration,
-            responses: useCase.responses
+            responses: []
         )
         return Timeline(
             entries: [entry],

@@ -15,6 +15,7 @@ import Domain
 
 @available(iOS 17.0, *)
 struct ArrivalInfoSmallView: View {
+    let usecase: ArrivalInfoUseCase = ArrivalInfoUseCase()
     var entry: ArrivalInfoProvider.Entry
     
     var url: URL? {
@@ -55,6 +56,13 @@ struct ArrivalInfoSmallView: View {
                 id: \.busStopId
             ) { busStopResponse in
                 RefreshView(entry: entry)
+                    .task {
+                        await 
+                        usecase.fetchResponses(
+                            busStopId: entry.responses.first?.busStopId
+                        )
+                    }
+                
                 HStack {
                     VStack(alignment: .leading) {
                         Text(busStopResponse.busStopName)

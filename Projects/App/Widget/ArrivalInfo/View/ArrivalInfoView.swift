@@ -24,8 +24,8 @@ struct ArrivalInfoView: View {
         switch widgetFamily {
         case .systemSmall:
             ArrivalInfoSmallView(entry: entry)
-        case .systemMedium:
-            ArrivalInfoMediumView(entry: entry)
+       // case .systemMedium:
+           // ArrivalInfoMediumView(entry: entry)
         default:
             EmptyView()
         }
