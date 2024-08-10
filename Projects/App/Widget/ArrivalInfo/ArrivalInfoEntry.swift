@@ -13,7 +13,7 @@ import Domain
 struct ArrivalInfoEntry: TimelineEntry {
     let date: Date
     let configuration: ArrivalInfoIntent
-    let responses: [BusStopArrivalInfoResponse]
+    var responses: [BusStopArrivalInfoResponse]
     
     init(
         date: Date,

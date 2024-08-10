@@ -135,11 +135,11 @@
 //        }
 //        .foregroundColor(.white)
 //    }
-//}
+// }
 //
-//#if DEBUG
-//@available(iOS 17.0, *)
-//struct ArrivalInfoMediumView_Preview: PreviewProvider {
+// #if DEBUG
+// @available(iOS 17.0, *)
+// struct ArrivalInfoMediumView_Preview: PreviewProvider {
 //    static var previews: some View {
 //        ArrivalInfoMediumView(
 //            entry: ArrivalInfoEntry(
@@ -163,5 +163,5 @@
 //            WidgetPreviewContext(family: .systemMedium)
 //        )
 //    }
-//}
-//#endif
+// }
+// #endif

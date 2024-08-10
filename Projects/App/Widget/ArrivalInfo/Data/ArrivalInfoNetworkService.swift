@@ -12,7 +12,7 @@ import Domain
 
 import RxSwift
 
-public final class WidgetNetworkService{
+public final class WidgetNetworkService {
     private let widgetNetworkService = WidgetNetworkService()
     private let disposeBag = DisposeBag()
     
@@ -95,5 +95,3 @@ public final class WidgetNetworkService{
             .compactMap { $0.toDomain }
         }
 }
-
-

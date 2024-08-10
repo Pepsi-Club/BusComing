@@ -20,11 +20,11 @@ final class ArrivalInfoUseCase {
     private let networkService = WidgetNetworkService()
     
     func fetchUserDefaultValue() {
-        guard let datas
-            = UserDefaults.appGroup.array(forKey: "arrivalResponse") as? [Data]
-        else {
-            return
-        }
+//        guard let datas
+//         = UserDefaults.appGroup.array(forKey: "arrivalResponse") as? [Data]
+//        else {
+//            return
+//        }
 //        responses = datas.compactMap {
 //            return try? 
 //            JSONDecoder().decode(BusStopArrivalInfoResponse.self, from: $0)
@@ -35,7 +35,7 @@ final class ArrivalInfoUseCase {
         busStopId: String,
         completion: @escaping ([BusStopArrivalInfoResponse])
         -> Void
-    ){
+    ) {
         networkService.fetchArrivalList(busStopId: busStopId)
             .subscribe(
                 onNext: { [weak self] response in
@@ -50,12 +50,13 @@ final class ArrivalInfoUseCase {
             .disposed(by: disposeBag)
     }
     
+// 여기에서 반환한 값을 ArrivalInfoEntry.reponses에 적용을 해야
+// 전체적으로 fetch가 돼서 widget View에 적용되는것 아닌지,,,모르겠음
      func fetchResponses(busStopId: String?) async ->
-    [BusStopArrivalInfoResponse]
-    {
-        return await 
+    [BusStopArrivalInfoResponse] {
+        return await
         withCheckedContinuation { continuation in
-            networkService.fetchArrivalList(busStopId: busStopId)
+            networkService.fetchArrivalList(busStopId: busStopId ?? "")
                 .subscribe(
                     onNext: { response in
                         continuation.resume(returning: [response])

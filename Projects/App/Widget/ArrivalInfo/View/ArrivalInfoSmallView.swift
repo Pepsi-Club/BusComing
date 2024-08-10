@@ -48,7 +48,6 @@ struct ArrivalInfoSmallView: View {
         .multilineTextAlignment(.center)
     }
     
-    //TODO: 데이터랑 연결 씁~;
     var arrivalInfoView: some View {
         VStack(alignment: .trailing, spacing: 9) {
             Spacer()
@@ -59,7 +58,9 @@ struct ArrivalInfoSmallView: View {
                 RefreshView(entry: entry)
 //                    .task {
 //                        await 
-//                        usecase.fetchResponses(
+//                        // entry.responses에 refresh된 
+//                        // 버스 도착정보==[BusStopArrivalInfoResponse]를 연결하고 싶다.
+//                        entry.responses = usecase.fetchResponses(
 //                            busStopId: entry.responses.first?.busStopId
 //                        )
 //                    }

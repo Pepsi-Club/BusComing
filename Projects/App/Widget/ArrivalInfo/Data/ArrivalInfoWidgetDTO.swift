@@ -303,4 +303,3 @@ extension BusStopArrivalInfoDTO {
         //        let plainNo2: String // null
     }
 }
-
