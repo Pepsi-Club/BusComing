@@ -34,10 +34,11 @@ public extension String {
         return serverKey
     }
     
+    /// 프로젝트 버전
     static func getCurrentVersion() -> String {
         guard let dictionary = Bundle.main.infoDictionary,
               let version = dictionary["CFBundleShortVersionString"] as? String
-        else { return "" }
+        else { return "1" }
         return version
     }
     
